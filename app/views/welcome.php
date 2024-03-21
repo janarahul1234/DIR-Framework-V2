@@ -7,6 +7,8 @@
     <title>DIY Framework V2</title>
 </head>
 <body>
-    <h1>Hello World!</h1>
+    <h1>{{ $name }}</h1>
+
+    {{ @import('navbar') }}
 </body>
 </html>

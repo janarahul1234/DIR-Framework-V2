@@ -4,6 +4,21 @@ namespace App\core;
 
 class Request
 {
+    public function getRequestUrl(string $method = 'REQUEST_URI'): string
+    {
+        $url = $_SERVER[$method];
+    
+        if ($method === 'REQUEST_URI') {
+            $pos = strpos($url, '?');
+            return $pos ? substr($url, 0, $pos) : $url;
+        }
+        
+        $url = str_contains($url, 'url=') ? '/' . substr($url, 4) : '/';
+        $pos = strpos($url, '&');
+        
+        return $pos ? substr($url, 0, $pos) : $url;
+    }
+    
     public function getMethod(): string
     {
         return strtolower($_SERVER['REQUEST_METHOD']);
@@ -17,18 +32,6 @@ class Request
     public function isPost(): string
     {
         return $this->getMethod() === 'post';
-    }
-
-    public function getRequestUrl(): string
-    {
-        $requrseUrl = $_SERVER['QUERY_STRING'];
-
-        if (isset($requrseUrl)){
-            $queryUrl = strpos($requrseUrl, '&');
-            $requrseUrl = $queryUrl ? substr($requrseUrl, 0, $queryUrl) : $requrseUrl;
-        }
-
-        return '/' . $requrseUrl;
     }
 
     public function getBody(): array

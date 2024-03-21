@@ -8,19 +8,20 @@ function view(string $name, array $values = []): string
     return Application::$app->resolve->render($name, $values);
 }
 
-function import(string $filename): void
+function import(string $filename, array $values = []): string
 {
-    include_once ROOT_DIR . "/app/views/{$filename}";
+    $filename = Application::$app->resolve->bufferFile($filename);
+    return Application::$app->resolve->injectorAll($filename, $values);
 }
 
-function route(string $name): void
+function route(string $name): string
 {
-    echo Application::$app->route->getRouteName($name);
+    return Application::$app->route->getRouteName($name);
 }
 
-function asset(string $filename): void
+function asset(string $filename): string
 {
-    echo "{$_ENV['BASE_URL']}/{$filename}";
+    return "{$_ENV['BASE_URL']}/{$filename}";
 }
 
 function generate_uuid(): string

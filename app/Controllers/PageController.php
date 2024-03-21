@@ -8,6 +8,6 @@ class PageController extends Controller
 {
     public function index(): string
     {
-        return view('welcome');
+        return view('welcome', ['name' => 'John']);
     }
 }

@@ -2,9 +2,12 @@
 
 namespace App\core;
 
-class Resolve
+use App\core\Razer\Razer;
+
+class Resolve extends Razer
 {
     private string $layout;
+    
     private Route $route;
     private Request $request;
     private Response $response;
@@ -56,36 +59,9 @@ class Resolve
 
     public function render(string $filename, array $values = []): string
     {
-        $layoutContent = $this->loadLayout();
-        $viewContent = $this->loadView($filename, $values);
+        $this->setLayout($this->layout);
+        $this->setView($filename, $values);
 
-        return $layoutContent ? str_replace('{{content}}', $viewContent, $layoutContent) : $viewContent;
-    }
-
-    public function loadView(string $filename, array $values = []): string
-    {
-        $filename = ROOT_DIR . "/app/views/{$filename}.php";
-
-        if ( ! file_exists($filename)) {
-            return "View file not found: {$filename}";
-        }
-
-        extract($values);
-        ob_start();
-        include $filename;
-        return ob_get_clean();
-    }
-    
-    public function loadLayout(): string | bool
-    {
-        $filename = ROOT_DIR . "/app/views/layouts/{$this->layout}.php";
-
-        if ( ! file_exists($filename)) {
-            return false;
-        }
-
-        ob_start();
-        include $filename;
-        return ob_get_clean();
+        return $this->bind();
     }
 }
