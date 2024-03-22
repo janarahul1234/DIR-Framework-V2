@@ -82,11 +82,15 @@ class Route
 
     public function getRouteName(string $name): string
     {
+        $routeName = '';
+
         foreach (self::$routes as $route) {
-            if ($route->name ?? '' === $name) {
-                return $_ENV['BASE_URL'] . $route->path;
+            if ($name === $route->name) {
+                $routeName = $_ENV['BASE_URL'] . $route->path;
             }
         }
+
+        return $routeName;
     }
 
     public function getCallback(string $method, string $requestUrl): mixed

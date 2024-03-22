@@ -2,8 +2,6 @@
 
 namespace App\core\Razer;
 
-use App\core\Razer\Injector;
-
 class Razer extends Injector
 {
     private string $view;
@@ -21,7 +19,7 @@ class Razer extends Injector
         $this->layout = "layouts/{$layout}";
     }
 
-    public function bufferFile(string $fileName): string
+    public function bufferFile(string $fileName, array $variables = []): string
     {
         $fileName = ROOT_DIR . "/app/views/{$fileName}.php";
 
@@ -29,6 +27,7 @@ class Razer extends Injector
             return false;
         }
 
+        extract($variables);
         ob_start();
         include $fileName;
         return ob_get_clean();
@@ -55,7 +54,7 @@ class Razer extends Injector
         return $variables;
     }
 
-    public function bind(): string
+    protected function bind(): string
     {
         $view = $this->bufferFile($this->view);
 

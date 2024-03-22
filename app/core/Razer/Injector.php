@@ -6,8 +6,21 @@ class Injector
 {
     public function injectorAll(string $bufferFile, array $variables): string
     {
-        $bufferFile = $this->functionInjector($bufferFile);
+        $bufferFile = $this->comment($bufferFile);
         $bufferFile = $this->variableInjector($bufferFile, $variables);
+        $bufferFile = $this->functionInjector($bufferFile);
+
+        return $bufferFile;
+    }
+
+    private function comment(string $bufferFile): string
+    {
+        $pattern = '/\{\{\-\-(.*?)\-\-\}\}/';
+        preg_match_all($pattern, $bufferFile, $matches, PREG_SET_ORDER);
+        
+        foreach ($matches as $match) {
+            $bufferFile = str_replace($match[0], '', $bufferFile);
+        }
 
         return $bufferFile;
     }

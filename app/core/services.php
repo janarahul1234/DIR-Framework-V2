@@ -10,7 +10,7 @@ function view(string $name, array $values = []): string
 
 function import(string $filename, array $values = []): string
 {
-    $filename = Application::$app->resolve->bufferFile($filename);
+    $filename = Application::$app->resolve->bufferFile($filename, $values);
     return Application::$app->resolve->injectorAll($filename, $values);
 }
 
